@@ -1,13 +1,26 @@
 import React from "react";
 import { useState } from "react";
-
+import { uRegister } from '../services/auth.js';
 export default function Register() {
   const [role, setRole] = useState("buyer");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Registering as:", role);
-    // Later: send role + form data to backend
+
+    try {
+      const res = await uRegister({
+        name: e.target.name.value,
+        email: e.target.email.value,
+        number: e.target.number.value,
+        address: e.target.address.value,
+        password: e.target.password.value,
+        role,
+      });
+      console.log("Registration successful:", res);
+    } catch (error) {
+      console.error("Registration error:", error);
+    }
   };
 
   return (
@@ -21,12 +34,12 @@ export default function Register() {
         {/* Role selection */}
         <div className="flex justify-center gap-4 mt-6">
           <button
-            onClick={() => setRole("buyer")}
+            onClick={() => setRole("User")}
             className={`px-4 py-2 rounded-lg text-sm font-medium ${
-              role === "buyer" ? "bg-green-600 text-white" : "bg-gray-200"
+              role === "User" ? "bg-green-600 text-white" : "bg-gray-200"
             }`}
           >
-            Buyer
+            User
           </button>
           <button
             onClick={() => setRole("farmer")}
@@ -42,20 +55,34 @@ export default function Register() {
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <input
             type="text"
+            name="name"
             placeholder="Full Name"
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500"
           />
           <input
             type="email"
+            name="email" 
             placeholder="Email"
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500"
           />
           <input
+            type="number"
+            name="number"
+            placeholder="Phone Number"
+            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500"
+          />
+          <input
             type="password"
+            name="password"
             placeholder="Password"
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500"
           />
-
+             <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500"
+          />
           <button
             type="submit"
             className="w-full bg-green-600 text-white py-3 rounded-lg font-semibold hover:bg-green-700"
