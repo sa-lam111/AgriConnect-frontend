@@ -1,14 +1,13 @@
 import React from "react";
 import { useState } from "react";
-import { uRegister } from '../services/auth.js';
+import { uRegister,fRegister } from '../services/auth.js';
 export default function Register() {
-  const [role, setRole] = useState("buyer");
-
+  const [role, setRole] = useState("User");
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log("Registering as:", role);
-
-    try {
+    if(role==="user"){
+        try {
       const res = await uRegister({
         name: e.target.name.value,
         email: e.target.email.value,
@@ -21,6 +20,23 @@ export default function Register() {
     } catch (error) {
       console.error("Registration error:", error);
     }
+    }
+      if(role==="farmer"){
+      try {
+        const res=await fRegister({
+          name: e.target.name.value,
+          email: e.target.email.value,
+          number: e.target.number.value,  
+          address: e.target.address.value,
+          password: e.target.password.value,
+          role
+        });
+         console.log("Registration successful:", res);
+      } catch (error) {
+        console.log(error);
+        alert("Farmer registration failed");
+      }
+  };
   };
 
   return (
