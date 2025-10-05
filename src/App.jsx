@@ -1,29 +1,29 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
 import Home from "./pages/Home";
-import Login from "./pages/Login";
+import Login from "./pages/user/Login";
 import Signup from "./pages/Register";
 import Marketplace from "./pages/Marketplace";
-import Farmerdashboard from "./pages/Farmerdashboard";
-import Farmerlogin from "./pages/Farmerlogin";
+import Farmerdashboard from "./pages/farmer/Farmerdashboard";
+import Farmerlogin from "./pages/farmer/Farmerlogin";
+import Product from "./pages/farmer/Product";
+import Loginroute from "./pages/Loginroute";
+import Userdashboard from "./pages/user/Userdashboard";
 export default function App() {
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow container mx-auto px-4 py-6">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/register" element={<Signup />} />
           <Route path="/marketplace" element={<Marketplace />} />
           <Route path="/farmerdashboard" element={<Farmerdashboard/>}/>
            <Route path="/farmerlogin" element={<Farmerlogin/>}/>
+            <Route path="/product" element={<Product/>}/>
+            <Route path="/loginroute" element={<Loginroute/>}/>
+            <Route path="/userdashboard" element={<Userdashboard/>}/>
         </Routes>
-      </main>
-      <Footer />
       <Toaster />
     </div>
     

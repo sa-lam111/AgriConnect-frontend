@@ -27,8 +27,11 @@ export const fLogin = async (credentials) => {
     console.log(error);
   }
 };
-
-// Logout (just clear local storage on frontend)
-export const logout = () => {
-  localStorage.removeItem("token");
+export const uLogin = async (credentials) => {
+  try {
+     const res = await api.post(`auth/uLogin`, credentials);
+     return res.data;
+  } catch (error) {
+    console.log(error);
+  }
 };

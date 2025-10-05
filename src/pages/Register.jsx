@@ -2,41 +2,36 @@ import React from "react";
 import { useState } from "react";
 import { uRegister,fRegister } from '../services/auth.js';
 export default function Register() {
-  const [role, setRole] = useState("User");
+  const [role, setRole] = useState("user");
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Registering as:", role);
+      const formData = {
+    name: e.target.name.value,
+    email: e.target.email.value,
+    number: e.target.number.value,
+    address: e.target.address.value,
+    password: e.target.password.value,
+    role,
+  };
     if(role==="user"){
         try {
-      const res = await uRegister({
-        name: e.target.name.value,
-        email: e.target.email.value,
-        number: e.target.number.value,
-        address: e.target.address.value,
-        password: e.target.password.value,
-        role,
-      });
+      const res = await uRegister(formData);
       console.log("Registration successful:", res);
+      alert("User registration successful");
     } catch (error) {
       console.error("Registration error:", error);
     }
     }
       if(role==="farmer"){
       try {
-        const res=await fRegister({
-          name: e.target.name.value,
-          email: e.target.email.value,
-          number: e.target.number.value,  
-          address: e.target.address.value,
-          password: e.target.password.value,
-          role
-        });
+        const res=await fRegister(formData);
          console.log("Registration successful:", res);
+         alert("Farmer registration successful");
       } catch (error) {
         console.log(error);
         alert("Farmer registration failed");
       }
-  };
+  }
   };
 
   return (
@@ -50,7 +45,7 @@ export default function Register() {
         {/* Role selection */}
         <div className="flex justify-center gap-4 mt-6">
           <button
-            onClick={() => setRole("User")}
+            onClick={() => setRole("user")}
             className={`px-4 py-2 rounded-lg text-sm font-medium ${
               role === "User" ? "bg-green-600 text-white" : "bg-gray-200"
             }`}

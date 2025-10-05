@@ -1,19 +1,22 @@
 import React from "react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-
+import { uLogin } from "../../services/auth.js";
 export default function Login() {
-  const [role,setRole]=useState('user');
   const navigate = useNavigate();
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Logging in successful:");
-    try{
-
-    }catch(error){
-     console.log(error);
-    }
+   try {
+        const res=await uLogin({
+        email:e.target.email.value,
+        password:e.target.password.value
+          });
+        localStorage.setItem('token',res.token);
+        localStorage.setItem('user',res.user.name);
+        navigate('/userdashboard');
+          } catch (error) {
+        console.log(error);
+          }
   };
 
   return (
@@ -21,21 +24,20 @@ export default function Login() {
       <div className="bg-white shadow-lg rounded-xl w-full max-w-md p-8">
         <h1 className="text-2xl font-bold text-center text-[#004C3F]">Welcome Back</h1>
         <p className="text-gray-600 text-center text-sm mt-2">
-          Sign in  <span className="font-medium">{}</span>
+        user Sign in  <span className="font-medium">{}</span>
         </p>
 
-        
-
-        {/* Form */}
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <input
             type="email"
+            name="email"
             placeholder="Email"
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500"
           />
           <input
             type="password"
             placeholder="Password"
+            name="password"
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500"
           />
 
