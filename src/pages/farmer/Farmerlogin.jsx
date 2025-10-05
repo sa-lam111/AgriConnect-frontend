@@ -1,34 +1,43 @@
 import React from "react";
-import { useState } from "react";
+import { fLogin } from '../../services/auth.js';
+import { useNavigate } from "react-router-dom";
+export default function Farmerlogin(){
+    const navigate=useNavigate();
+    const handleSubmit=async(e)=>{
+        e.preventDefault();
+        try {
+            const res=await fLogin({
+                email:e.target.email.value,
+                password:e.target.password.value
+            });
+            localStorage.setItem('token',res.token);
+            navigate('/farmerdashboard');
+        } catch (error) {
+            console.log(error);
+        }
+    }
 
-export default function Login() {
-  const [role, setRole] = useState("buyer");
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log("Logging in as:", role);
-    // Later: send login data + role to backend
-  };
-
-  return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-50">
+    return(
+        <div>
+<div className="flex items-center justify-center min-h-screen bg-gray-50">
       <div className="bg-white shadow-lg rounded-xl w-full max-w-md p-8">
         <h1 className="text-2xl font-bold text-center text-[#004C3F]">Welcome Back</h1>
         <p className="text-gray-600 text-center text-sm mt-2">
-          Sign in  <span className="font-medium">{}</span>
+         Farmer Sign in  <span className="font-medium">{}</span>
         </p>
 
-        
-
-        {/* Form */}
         <form onSubmit={handleSubmit} className="mt-6 space-y-4">
           <input
             type="email"
+            name="email"
+            required
             placeholder="Email"
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500"
           />
           <input
             type="password"
+            name="password"
+            required
             placeholder="Password"
             className="w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-green-500"
           />
@@ -46,5 +55,6 @@ export default function Login() {
         </p>
       </div>
     </div>
-  );
+        </div>
+    )
 }

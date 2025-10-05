@@ -1,20 +1,37 @@
-import axios from "axios";
+import api from '../services/api.js';
 
-const API_URL = "http://localhost:5000/api/auth"; // change this to your backend URL
-
-// Register a new user
-export const register = async (userData) => {
-  const res = await axios.post(`${API_URL}/register`, userData);
-  return res.data;
+export const uRegister = async (userData) => {
+  try {
+    const res = await api.post(`auth/uRegister`, userData);
+    return res.data;
+  } catch (error) {
+    console.error("Registration error:", error);
+    throw error;
+  }
+};
+export const fRegister = async (farmerData) => {
+  try {
+    const res = await api.post(`auth/fRegister`, farmerData);
+    return res.data;
+  } catch (error) {
+    console.error("Registration error:", error);
+    throw error;
+  }
 };
 
-// Login user
-export const login = async (credentials) => {
-  const res = await axios.post(`${API_URL}/login`, credentials);
-  return res.data;
+export const fLogin = async (credentials) => {
+  try {
+     const res = await api.post(`auth/fLogin`, credentials);
+     return res.data;
+  } catch (error) {
+    console.log(error);
+  }
 };
-
-// Logout (just clear local storage on frontend)
-export const logout = () => {
-  localStorage.removeItem("token");
+export const uLogin = async (credentials) => {
+  try {
+     const res = await api.post(`auth/uLogin`, credentials);
+     return res.data;
+  } catch (error) {
+    console.log(error);
+  }
 };

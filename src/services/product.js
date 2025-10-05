@@ -1,19 +1,52 @@
-import axios from "axios";
+import api from "./api.js";
 
-const API_URL = "http://localhost:5000/api/products"; // change to backend
-
-// Get all products
 export const getProducts = async () => {
-  const res = await axios.get(API_URL);
-  return res.data;
+  try {
+    const res = await api.get("/products");
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    throw error;
+  }
 };
 
-// Add new product (for farmers)
-export const addProduct = async (productData, token) => {
-  const res = await axios.post(API_URL, productData, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return res.data;
+export const getProductsForFarmer = async () => {
+  try {
+    const res = await api.get(`/products/farmer`);
+    return res.data;
+  } catch (error) {
+    console.error("Error fetching products for farmer:", error);
+    throw error;
+  }
+}
+
+export const addProduct = async (productData) => {
+  try {
+    const res = await api.post(`/products`, productData);
+    return res.data;
+  } catch (error) {
+    console.error("Error adding product:", error);
+    throw error;
+  }
 };
+
+export const updateProduct=async(updateData)=>{
+    try {
+        const res=await api.put(`/products`,updateData)
+        return res;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+export const deleteProduct=async(editingProductId)=>{
+    try {
+      const productId=editingProductId;
+        const res=await api.delete(`/products/${productId}`)
+        console.log(editingProductId);
+        return res;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}

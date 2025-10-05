@@ -1,9 +1,11 @@
 import React from "react";
 import { Link } from "react-router-dom";
-
+import Footer from "../components/Footer";
+import Navbar from "../components/Navbar";
 const Home = () => {
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen flex-grow container mx-auto px-4 py-6">
+      <Navbar />
       {/* Hero Section */}
       <section className="bg-white">
         <div className="container mx-auto px-6 py-20 grid md:grid-cols-2 gap-10 items-center">
@@ -18,7 +20,7 @@ const Home = () => {
             </p>
             <div className="mt-8 space-x-4">
               <Link
-                to="/login"
+                to="/loginroute"
                 className="bg-green-700 text-white px-6 py-3 rounded-lg font-semibold hover:bg-green-800 transition"
               >
                 Get Started
@@ -58,7 +60,7 @@ const Home = () => {
               <span className="text-green-700 text-4xl font-bold">2</span>
               <h4 className="text-xl font-semibold mt-4">Buyers Browse & Order</h4>
               <p className="text-gray-600 mt-2">
-                Buyers explore the marketplace and place direct orders.
+                Users register and explore the marketplace and place direct orders.
               </p>
             </div>
             <div className="bg-white p-8 rounded-xl shadow hover:shadow-lg transition">
@@ -110,7 +112,7 @@ const Home = () => {
         <div className="container mx-auto px-6 text-center">
           <h3 className="text-3xl font-bold text-gray-900">Our Solution</h3>
           <p className="text-gray-600 mt-6 max-w-3xl mx-auto">
-            AgriConnect is more than just a marketplace—it’s a platform designed
+            AgriConnect is more than just a marketplace it is a platform designed
             to transform agriculture in Nigeria. From fair pricing to improved
             logistics and access to knowledge, we are building a transparent and
             sustainable food system for everyone.
@@ -125,6 +127,7 @@ const Home = () => {
           </div>
         </div>
       </section>
+      <Footer />
     </div>
   );
 };

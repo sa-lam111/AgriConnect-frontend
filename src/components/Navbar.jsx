@@ -40,17 +40,12 @@ const Navbar = () => {
           <Link to="/" className="text-white hover:text-gray-200 transition">
             Home
           </Link>
-          <Link
-            to="/marketplace"
-            className="text-white hover:text-gray-200 transition"
-          >
-            Marketplace
-          </Link>
-          <Link to="/login" className="text-white hover:text-gray-200 transition">
+          
+          <Link to="/loginroute" className="text-white hover:text-gray-200 transition">
             Login
           </Link>
           <Link
-            to="/signup"
+            to="/register"
             className="bg-white text-[#008060] px-4 py-2 rounded-lg font-semibold hover:bg-gray-100 transition"
           >
             Signup
