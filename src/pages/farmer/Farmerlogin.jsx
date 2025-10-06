@@ -11,6 +11,7 @@ export default function Farmerlogin(){
                 password:e.target.password.value
             });
             localStorage.setItem('token',res.token);
+            localStorage.setItem('farmer',res.data._id);
             navigate('/farmerdashboard');
         } catch (error) {
             console.log(error);

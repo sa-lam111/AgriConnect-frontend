@@ -18,3 +18,22 @@ export const getWeather=async(coordinates)=>{
         throw error;
     }
 }
+export const addToCart=async(pacel)=>{
+    try {
+        const res=await api.post(`/user/addToCart`,pacel);
+        return res;
+        
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+}
+export const getCart=async(userId)=>{
+    try{
+        const res=await api.get(`/user/getCart`,userId);
+        return res.data.items || [];
+    }catch(error){
+        console.log(error);
+        throw error;
+    }
+}

@@ -13,6 +13,7 @@ export default function Login() {
           });
         localStorage.setItem('token',res.token);
         localStorage.setItem('user',res.user.name);
+        localStorage.setItem('id',res.user._id);
         navigate('/userdashboard');
           } catch (error) {
         console.log(error);

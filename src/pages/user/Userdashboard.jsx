@@ -7,21 +7,20 @@ export default function Userdashboard(){
     useEffect(()=>{
         const fetchData=async()=>{
             const user=localStorage.getItem("user");
-            console.log(user);
         const products=await productService.getProducts();
-        console.log(products);
         setProduct(products)
         setUsers(user)
         }
         fetchData();
         const token = localStorage.getItem("token");
             if (!token) {
-            window.location.href = "/login";
+            window.location.href = "/loginroute";
             }
     },[])
      const handleLogout=()=>{
         localStorage.removeItem("token");
         localStorage.removeItem("user");
+        localStorage.removeItem("id");
         window.location.href="/login";
     }
     return(
@@ -32,7 +31,7 @@ export default function Userdashboard(){
                 </div>
                 <div className="flex space-x-10">
             <Link to="/" className="text-[28px] hover:text-gray-300 text-gray-400 underline underline-offset-10">Home</Link>
-            <Link to="/orders" className="text-[28px] hover:text-gray-300">Cart</Link>
+            <Link to="/cart" className="text-[28px] hover:text-gray-300">Cart</Link>
             <Link to="/marketplace" className="text-[28px] hover:text-gray-300">Marketplace</Link>
             <Link onClick={handleLogout} className="text-[28px] text-red-500 hover:text-red-300">Logout</Link>
                 </div>
