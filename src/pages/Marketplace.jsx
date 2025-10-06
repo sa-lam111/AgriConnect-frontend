@@ -1,73 +1,100 @@
 import React, { useState, useEffect } from "react";
-
+import * as productServices from '../services/product.js'
+import { addToCart } from "../services/user.js";
+import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 export default function Marketplace() {
   const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    // Temporary hardcoded data with images
-    setProducts([
-      {
-        id: 1,
-        name: "Tomatoes",
-        description: "Freshly harvested red tomatoes",
-        quantity: "200 kg",
-        price: 500,
-        farmerName: "Ikechukwu",
-        contact: "08012345678",
-        image: "https://images.unsplash.com/photo-1607305387299-80d2fcdbb5c0?w=600"
-      },
-      {
-        id: 2,
-        name: "Maize",
-        description: "Organic yellow maize",
-        quantity: "50 bags",
-        price: 15000,
-        farmerName: "Ojojuwon",
-        contact: "08098765432",
-        image: "https://images.unsplash.com/photo-1629138549233-38a5f7c3df8d?w=600"
-      },
-      {
-        id: 3,
-        name: "Yam",
-        description: "Big fresh tubers of yam",
-        quantity: "120 tubers",
-        price: 2500,
-        farmerName: "Emeka",
-        contact: "08022223333",
-        image: "https://images.unsplash.com/photo-1622205255002-6dbd6be9f54d?w=600"
+  const [show,setShow]=useState(true);
+  const [show2,setShow2]=useState(false);
+  const navigate = useNavigate();
+  const [editingProductId, setEditingProductId] = useState(null);
+  const handleCart=async(e)=>{
+    e.preventDefault();
+      const quantity=e.target.quantity.value;
+      const id=localStorage.getItem("id");
+    try {
+      await addToCart({
+        userId:id,
+        productId:editingProductId,
+        quantity
+      })
+      alert("Added successfully");
+      const goToCart = window.confirm("Would you like to view your cart?");
+    if (goToCart) {
+      navigate("/userdashboard");
+    }
+    } catch (error) {
+      console.log(error);
+      throw error;
+    }
+  }
+  const handleLogout=()=>{
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+        localStorage.removeItem("id");
+        localStorage.removeItem("farmer");
+        window.location.href="/loginroute";
+    }
+   useEffect(() => {
+    const fetchData=async()=>{
+      const user=localStorage.getItem("user");
+      const userId=localStorage.getItem("id");
+      const prod=await productServices.getProducts();
+      if(!user||!userId){
+        setShow(false);
       }
-    ]);
+      setProducts(prod);
+    }
+    fetchData();
   }, []);
 
   return (
-    <div className="container mx-auto px-6 py-12">
-      <h2 class="text-3xl font-bold mb-6 text-primary">Marketplace</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div className="">
+      <div className="flex items-center justify-between px-35 py-5 bg-[#004C3F] text-white shadow-xl">
+                <div className="text-2xl font-bold">
+                    AGRICONNECT
+                </div>
+                <div className="flex space-x-10">
+            <Link to="/product" className="text-[28px] hover:text-gray-300  ">Products</Link>
+            <Link to="/orders" className="text-[28px] hover:text-gray-300">Orders</Link>
+            <Link to="/marketplace" className="text-[28px] hover:text-gray-300 text-gray-400 underline underline-offset-10">Marketplace</Link>
+            <button onClick={handleLogout} className="text-[28px] hover:text-gray-300">Log out</button>
+                </div>
+            
+            </div>
+      <div className="container mx-auto px-6 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((p) => (
-          <div
-            key={p.id}
-            className="border rounded-xl p-6 shadow hover:shadow-lg transition bg-white"
-          >
-            <img
-              src={p.image}
-              alt={p.name}
-              className="w-full h-40 object-cover rounded-lg mb-4"
-            />
-            <h3 class="font-bold text-2xl text-text-primary">{p.name}</h3>
-            <p class="text-gray-600 mt-2">{p.description}</p>
-            <p class="mt-2 font-semibold text-gray-700">
-              Quantity: {p.quantity}
+          <div key={p._id} className="border rounded-xl p-6 shadow hover:shadow-lg transition bg-white" >
+            {editingProductId === p._id ? (
+              <div className="transition-all duration-300">
+                <img src={p.image} alt={p.name} className="w-full h-40 object-cover rounded-lg mb-4" />
+                <h3 className="font-bold text-2xl text-text-primary">{p.name}</h3>
+                <p className="text-gray-600 mt-2">{p.description}</p>
+                <p className="mt-2 font-semibold text-gray-700">Available Quantity: {p.quantity}</p>
+                <p className="text-green-700 font-bold text-lg mt-2">Current price: ${p.price}</p>
+                 <form className="pt-2" onSubmit={handleCart}>
+                  <div className="space-x-2">
+                  <label htmlFor="quantity">Quantity:</label><input type="number" name="quantity" className="w-7 border" />
+                 </div>
+                 <div className="pt-1">
+                  <button type="submit" className="bg-green-500 text-white px-3 py-1 rounded">Add to cart</button> <button onClick={() => setEditingProductId(null)} className="bg-gray-300 px-3 py-1 rounded">Cancel</button>
+                 </div>
+                 </form>
+              </div>
+             ) : (<><img src={p.image} alt={p.name} className="w-full h-40 object-cover rounded-lg mb-4" />
+            <h3 className="font-bold text-2xl text-text-primary">{p.name}</h3>
+            <p className="text-gray-600 mt-2">{p.description}</p>
+            <p className="mt-2 font-semibold text-gray-700"> Quantity: {p.quantity}</p>
+            <p className="text-green-700 font-bold text-lg mt-2">${p.price}</p>
+            <p className="text-sm mt-3">
+              <span className="font-semibold">Farmer:</span> {p.seller}
             </p>
-            <p class="text-green-700 font-bold text-lg mt-2">₦{p.price}</p>
-            <p class="text-sm mt-3">
-              <span class="font-semibold">Farmer:</span> {p.farmerName}
-            </p>
-            <a
-              href={`tel:${p.contact}`}
-              className="block mt-4 bg-primary text-white text-center px-4 py-2 rounded-lg hover:bg-green-600 transition"
-            >
-              Contact Farmer
-            </a>
+            {show &&(
+              <div className="justify-end flex space-x-4">
+                <button onClick={()=>setEditingProductId(p._id)} className="bg-yellow-500 text-white px-3 py-1 rounded">Place order</button>
+              </div>
+            )}</>)}
           </div>
         ))}
       </div>
